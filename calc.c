@@ -49,7 +49,7 @@ void push(Pilha *pilha, int elemento)
     {
         pilha->topo++;
         pilha->itens[pilha->topo] = elemento;
-        //printf("adicionou: %d\n", elemento);
+        printf("adicionou: %d\n", elemento);
     }
 }
 
@@ -131,7 +131,11 @@ int main(int argc, char const *argv[])
         {
             break;
         }
-        if ((expressao[i] == '\0') && (!vazia(operadores))) // ainda tem operador, mas todos que tem tem precedencia igual
+        else if ((expressao[i] == '\0') && (operadores->itens[operadores->topo] == '('))
+        {
+            break;
+        }
+        else if ((expressao[i] == '\0') && (!vazia(operadores))) // ainda tem operador, mas todos que tem tem precedencia igual
         {
             while (!vazia(operadores))
             {
@@ -146,9 +150,20 @@ int main(int argc, char const *argv[])
         }
         else if (!(isdigit(expressao[i])))
         {
-            if (operadores->topo == -1)
+            if (((operadores->topo == -1) || (expressao[i] == '(') || operadores->itens[operadores->topo] == '('))
             {
                 push(operadores, expressao[i]);
+            }
+            else if (expressao[i] == ')')
+            {
+                while (operadores->itens[operadores->topo] != '(')
+                {
+                    val1 = pop(operandos);
+                    val2 = pop(operandos);
+                    op = pop(operadores);
+                    push(operandos, calcula(val2, val1, op));
+                }
+                // pop(operadores); // para remover o '('
             }
             else
             {
@@ -171,7 +186,7 @@ int main(int argc, char const *argv[])
             // printf("antes do while");
             //  aux = isdigit(expressao[i]);
             // printf("aux: %d\n", aux);
-            while ((isdigit(expressao[i])) || (expressao[i] == '.'))
+            while (isdigit(expressao[i]))
             {
                 // printf("dentro do while\n");
                 auxNum[pos] = expressao[i];
@@ -179,10 +194,11 @@ int main(int argc, char const *argv[])
                 pos++;
                 // aux = isdigit(expressao[i]);
             }
+            auxNum[pos] = '\0';
             pos = 0;
-            numero = atof(auxNum);
+            numero = atoi(auxNum);
             printf("numero: %d\n", numero);
-            auxNum[0] = '\0';
+            // auxNum[0] = '\0';
             push(operandos, numero);
             // printf("oi");
         }
