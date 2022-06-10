@@ -49,6 +49,7 @@ void push(Pilha *pilha, int elemento)
     {
         pilha->topo++;
         pilha->itens[pilha->topo] = elemento;
+        printf("adicionou: %d\n", elemento);
     }
 }
 
@@ -83,7 +84,7 @@ int precedencia(char op1, char op2) // op1 a ser adicionado e op2 topo da pilha 
     }
     else if (((op1 == '+') || (op1 == '-')) && ((op2 == '+') || (op2 == '-')))
     {
-        return 1; // tem precendencia igual e não faz diferença quem é feito primeiro, então considera o op a ser adicionado como maior precedencia pra adicionar na pilha e calcular depois
+        return 2; // tem precendencia igual e não faz diferença quem é feito primeiro, então considera o op a ser adicionado como maior precedencia pra adicionar na pilha e calcular depois
     }
 }
 
@@ -106,14 +107,14 @@ int main(int argc, char const *argv[])
 {
     char expressao[1000];
     scanf("%s", expressao);
-    printf("leu a expressao");
+    // printf("leu a expressao");
     Pilha *operadores = (Pilha *)malloc(sizeof(Pilha));
     inicia(operadores);
     Pilha *operandos = (Pilha *)malloc(sizeof(Pilha));
     inicia(operandos);
-    printf("iniciou as pilhas");
+    // printf("iniciou as pilhas");
 
-    printf("declarou as variaveis");
+    // printf("declarou as variaveis");
     int i = 0;
 
     char auxNum[1000];
@@ -136,7 +137,7 @@ int main(int argc, char const *argv[])
                 val1 = pop(operandos);
                 val2 = pop(operandos);
                 op = pop(operadores);
-                printf("oi");
+                // printf("oi");
                 push(operandos, calcula(val2, val1, op));
             }
         }
@@ -148,14 +149,14 @@ int main(int argc, char const *argv[])
             }
             else
             {
-                while ((precedencia(expressao[i], operadores->itens[operadores->topo]) == 2)) // precedencia dos operadores do topo da pilha maior que os operadores a serem adicionados
+                while ((precedencia(expressao[i], operadores->itens[operadores->topo]) == 2) && (!vazia(operadores))) // precedencia dos operadores do topo da pilha maior que os operadores a serem adicionados
                 {
                     val1 = pop(operandos);
                     val2 = pop(operandos);
                     op = pop(operadores);
-                    push(operandos, calcula(val2, val2, op));
+                    push(operandos, calcula(val2, val1, op));
                 }
-                if ((precedencia(expressao[i], operadores->itens[operadores->topo]) == 1))
+                if ((precedencia(expressao[i], operadores->itens[operadores->topo]) == 1) || (vazia(operadores)))
                 { // precedencia do que vai ser adicionado na pilha maior ou igual ao que está no topo da pilha
                     push(operadores, expressao[i]);
                 }
@@ -164,12 +165,12 @@ int main(int argc, char const *argv[])
         }
         else
         {
-            printf("antes do while");
-            // aux = isdigit(expressao[i]);
-            printf("aux: %d\n", aux);
+            // printf("antes do while");
+            //  aux = isdigit(expressao[i]);
+            // printf("aux: %d\n", aux);
             while (isdigit(expressao[i]))
             {
-                printf("dentro do while\n");
+                // printf("dentro do while\n");
                 auxNum[pos] = expressao[i];
                 i++;
                 pos++;
@@ -179,7 +180,7 @@ int main(int argc, char const *argv[])
             numero = atoi(auxNum);
             auxNum[0] = '\0';
             push(operandos, numero);
-            printf("oi");
+            // printf("oi");
         }
     }
     printf("%d", pop(operandos));
