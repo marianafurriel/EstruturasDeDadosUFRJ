@@ -49,7 +49,7 @@ void push(Pilha *pilha, int elemento)
     {
         pilha->topo++;
         pilha->itens[pilha->topo] = elemento;
-        printf("adicionou: %d\n", elemento);
+        //printf("adicionou: %d\n", elemento);
     }
 }
 
@@ -118,10 +118,11 @@ int main(int argc, char const *argv[])
     int i = 0;
 
     char auxNum[1000];
-    int numero = 0;
+    int numero = 0.0;
     int pos = 0;
-    int val1 = 0;
-    int val2 = 0;
+    int val1 = 0.0;
+    int val2 = 0.0;
+    int result = 0.0;
     char op;
     int aux = 0;
     while (1)
@@ -137,8 +138,10 @@ int main(int argc, char const *argv[])
                 val1 = pop(operandos);
                 val2 = pop(operandos);
                 op = pop(operadores);
+                result = calcula(val2, val1, op);
+                printf("%d\n", result);
                 // printf("oi");
-                push(operandos, calcula(val2, val1, op));
+                push(operandos, result);
             }
         }
         else if (!(isdigit(expressao[i])))
@@ -168,7 +171,7 @@ int main(int argc, char const *argv[])
             // printf("antes do while");
             //  aux = isdigit(expressao[i]);
             // printf("aux: %d\n", aux);
-            while (isdigit(expressao[i]))
+            while ((isdigit(expressao[i])) || (expressao[i] == '.'))
             {
                 // printf("dentro do while\n");
                 auxNum[pos] = expressao[i];
@@ -177,7 +180,8 @@ int main(int argc, char const *argv[])
                 // aux = isdigit(expressao[i]);
             }
             pos = 0;
-            numero = atoi(auxNum);
+            numero = atof(auxNum);
+            printf("numero: %d\n", numero);
             auxNum[0] = '\0';
             push(operandos, numero);
             // printf("oi");
