@@ -117,13 +117,14 @@ int main(int argc, char const *argv[])
     int pos = 0;
     int val1 = 0;
     int val2 = 0;
-    char op = 'a';
-
+    char op;
+    int aux = 0;
     while (1)
     {
-        // if ((expressao[i] == '\0')){
-        //     break;
-        // }
+        if ((expressao[i] == '\0') && (vazia(operadores)))
+        {
+            break;
+        }
         if ((expressao[i] == '\0') && (!vazia(operadores))) // ainda tem operador, mas todos que tem tem precedencia igual
         {
             while (!vazia(operadores))
@@ -132,10 +133,10 @@ int main(int argc, char const *argv[])
                 val2 = pop(operandos);
                 op = pop(operadores);
                 printf("oi");
-                push(operandos, calcula(val2, val2, op));
+                push(operandos, calcula(val2, val1, op));
             }
         }
-        else if ((!isdigit(expressao[i])) && (expressao[i] != ')') && (expressao[i] != '('))
+        else if (!(isdigit(expressao[i])))
         {
             if (operadores->topo == -1)
             {
@@ -159,14 +160,17 @@ int main(int argc, char const *argv[])
         }
         else
         {
-            while ((isdigit(expressao[i])) && (i < MAXTAM))
+            printf("antes do while");
+            // aux = isdigit(expressao[i]);
+            printf("aux: %d\n", aux);
+            while (isdigit(expressao[i]))
             {
+                printf("dentro do while\n");
                 auxNum[pos] = expressao[i];
                 i++;
                 pos++;
+                // aux = isdigit(expressao[i]);
             }
-            pos = 0;
-
             pos = 0;
             numero = atoi(auxNum);
             auxNum[0] = '\0';
