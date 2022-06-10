@@ -71,15 +71,19 @@ int precedencia(char op1, char op2) // op1 a ser adicionado e op2 topo da pilha 
 {
     if (((op1 == '/') || (op1 == '*')) && ((op2 == '+') || (op2 == '-')))
     {
-        return 1;
+        return 1; // op a ser adicionado tem precedencia maior
     }
     else if ((((op2 == '/') || (op2 == '*')) && ((op1 == '+') || (op1 == '-'))))
     {
-        return 2;
+        return 2; // op da pilha tem precedencia maior
     }
     else if (((op1 == '/') || (op1 == '*')) && ((op2 == '/') || (op2 == '*')))
     {
-        return 2;
+        return 2; // tem precedencia igual mas precisa fazer na ordem que aparece, então o da pilha precisa ser feito primeiro
+    }
+    else if (((op1 == '+') || (op1 == '-')) && ((op2 == '+') || (op2 == '-')))
+    {
+        return 1; // tem precendencia igual e não faz diferença quem é feito primeiro, então considera o op a ser adicionado como maior precedencia pra adicionar na pilha e calcular depois
     }
 }
 
