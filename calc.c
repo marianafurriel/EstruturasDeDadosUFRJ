@@ -6,7 +6,7 @@
 
 typedef struct pilha
 {
-    char itens[MAXTAM];
+    int itens[MAXTAM];
     int topo;
 } Pilha;
 
@@ -49,7 +49,7 @@ void push(Pilha *pilha, int elemento)
     {
         pilha->topo++;
         pilha->itens[pilha->topo] = elemento;
-        printf("adicionou: %d\n", elemento);
+        // printf("adicionou: %d\n", elemento);
     }
 }
 
@@ -63,7 +63,7 @@ int pop(Pilha *pilha)
     else
     {
         aux = pilha->itens[pilha->topo];
-        pilha->topo--;
+        pilha->topo = pilha->topo - 1;
         return aux;
     }
 }
@@ -118,11 +118,11 @@ int main(int argc, char const *argv[])
     int i = 0;
 
     char auxNum[1000];
-    int numero = 0.0;
+    int numero = 0;
     int pos = 0;
-    int val1 = 0.0;
-    int val2 = 0.0;
-    int result = 0.0;
+    int val1 = 0;
+    int val2 = 0;
+    int result = 0;
     char op;
     int aux = 0;
     while (1)
@@ -131,10 +131,10 @@ int main(int argc, char const *argv[])
         {
             break;
         }
-        else if ((expressao[i] == '\0') && (operadores->itens[operadores->topo] == '('))
-        {
-            break;
-        }
+        // else if ((expressao[i] == '\0') && (operadores->itens[operadores->topo] == '('))
+        // {
+        //     break;
+        // }
         else if ((expressao[i] == '\0') && (!vazia(operadores))) // ainda tem operador, mas todos que tem tem precedencia igual
         {
             while (!vazia(operadores))
@@ -146,24 +146,33 @@ int main(int argc, char const *argv[])
                 printf("%d\n", result);
                 // printf("oi");
                 push(operandos, result);
+                printf("adicionou resultado aqui deu errado 3: %d\n", result);
             }
         }
         else if (!(isdigit(expressao[i])))
         {
-            if (((operadores->topo == -1) || (expressao[i] == '(') || operadores->itens[operadores->topo] == '('))
-            {
-                push(operadores, expressao[i]);
-            }
-            else if (expressao[i] == ')')
+            if (expressao[i] == ')')
             {
                 while (operadores->itens[operadores->topo] != '(')
                 {
+                    printf("topo da pilha de operadores: %c\n", operadores->itens[operadores->topo]);
                     val1 = pop(operandos);
                     val2 = pop(operandos);
                     op = pop(operadores);
-                    push(operandos, calcula(val2, val1, op));
+                    printf("val1 = %d\nval2 = %d\n op = %c\n", val1, val2, op);
+                    result = calcula(val2, val1, op);
+                    printf("result %d\n", result);
+                    printf("topo da pilha de operandos: %d\n", operandos->itens[operandos->topo]);
+                    push(operandos, result);
+                    printf("topo da pilha de operandos: %d\n", operandos->itens[operandos->topo]);
+                    printf("adicionou resultado aqui deu errado: %d\n", result);
                 }
-                // pop(operadores); // para remover o '('
+                pop(operadores); // para remover o '('
+            }
+            else if (((operadores->topo == -1) || (expressao[i] == '(') || operadores->itens[operadores->topo] == '('))
+            {
+                push(operadores, expressao[i]);
+                printf("adicionou: %c\n", expressao[i]);
             }
             else
             {
@@ -172,11 +181,14 @@ int main(int argc, char const *argv[])
                     val1 = pop(operandos);
                     val2 = pop(operandos);
                     op = pop(operadores);
-                    push(operandos, calcula(val2, val1, op));
+                    result = calcula(val2, val1, op);
+                    push(operandos, result);
+                    printf("adicionou resultado aqui deu errado 2: %d\n", result);
                 }
                 if ((precedencia(expressao[i], operadores->itens[operadores->topo]) == 1) || (vazia(operadores)))
                 { // precedencia do que vai ser adicionado na pilha maior ou igual ao que está no topo da pilha
                     push(operadores, expressao[i]);
+                    printf("adicionou: %c\n", expressao[i]);
                 }
             }
             i++;
@@ -197,9 +209,10 @@ int main(int argc, char const *argv[])
             auxNum[pos] = '\0';
             pos = 0;
             numero = atoi(auxNum);
-            printf("numero: %d\n", numero);
-            // auxNum[0] = '\0';
+            // printf("numero: %d\n", numero);
+            //  auxNum[0] = '\0';
             push(operandos, numero);
+            printf("adicionou numero: %d\n", numero);
             // printf("oi");
         }
     }
