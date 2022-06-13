@@ -8,6 +8,7 @@ typedef struct pilha
 {
     int itens[MAXTAM];
     int topo;
+    Pilha teste;
 } Pilha;
 
 void inicia(Pilha *pilha)
