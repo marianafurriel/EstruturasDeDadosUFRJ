@@ -59,10 +59,12 @@ int main(int argc, char const *argv[])
         {
             graus[i] = graus[i] + adj[j][i];
         }
+        printf("grau %d = %d\n", i + 1, graus[i]);
     }
 
     while (aux < vertices)
     {
+        printf("aux%d\n", aux);
 
         for (int i = 0; i < vertices; i++)
         {
@@ -70,22 +72,28 @@ int main(int argc, char const *argv[])
             if ((graus[i] == 0) && (add[i] == 0))
             {
                 ordem[ord] = i + 1;
+                printf("adicionado no vetor de ordem: %d\n", i + 1);
                 ord++;
                 add[i] = 1;
-            }
-            for (int j = 0; j < vertices; j++)
-            {
-                if (adj[j][i] == 1)
+                for (int j = 0; j < vertices; j++)
                 {
-                    graus[i]--;
+                    if (adj[i][j] == 1)
+                    {
+                        graus[j]--;
+                    }
                 }
             }
         }
+        for (int j = 0; j < vertices; j++)
+        {
+            printf("grau %d = %d\n", j + 1, graus[j]);
+        }
+
         aux++;
     }
-    for (int i = 0; i < strlen(ordem); i++)
+    for (int i = 0; i < vertices; i++)
     {
-        printf("\n%d\n", ordem[i]);
+        printf("%d ", ordem[i]);
     }
     return 0;
 }
