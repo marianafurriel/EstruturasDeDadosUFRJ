@@ -16,9 +16,11 @@ int main(int argc, char const *argv[])
     scanf("%d", &vertices);
     scanf("%d", &arestas);
     c = getchar();
-    int adj[vertices][vertices]; // = malloc(sizeof(int) * vertices * vertices);
+
+    int adj[vertices][vertices];
     int graus[vertices];
     int add[vertices];
+
     for (int i = 0; i < vertices; i++) // preenchendo a matriz de adjacencias toda com 0
     {
         for (int j = 0; j < vertices; j++)
@@ -53,7 +55,6 @@ int main(int argc, char const *argv[])
 
     for (int i = 0; i < vertices; i++)
     {
-
         for (int j = 0; j < vertices; j++)
         {
             graus[i] = graus[i] + adj[j][i];
@@ -82,44 +83,9 @@ int main(int argc, char const *argv[])
         }
         aux++;
     }
-    printf("%d\n", ordem[0]);
-    printf("%d\n", ordem[1]);
-    printf("%d\n", ordem[2]);
-    printf("%d\n", ordem[4]);
-    // for (int i = 0; i < strlen(ordem); i++)
-    // {
-    //     printf("%d ", ordem[i]);
-    // }
-    printf("\n");
-    /////////////////////////////////////////////////////////////////////////
-    // for (int i = 0; i < vertices; i++)
-    // {                                      // colunas
-    //     for (int j = 0; j < vertices; j++) // linhas
-    //     {
-    //         if (adj[j][i] == 1)
-    //         {
-    //             soma++;
-    //         }
-    //     }
-    //     if (soma == 0)
-    //     {
-    //         ordem[ord] = i;
-    //         for (int j = 0; j < vertices; j++)
-    //         {
-
-    //         }
-
-    //     }
-    // }
-    /////////////////////////////////////
-    // for (int i = 0; i < vertices; i++)
-    // {
-    //     for (int j = 0; j < vertices; j++)
-    //     {
-    //         printf("\t%d", adj[i][j]);
-    //     }
-    //     printf("\n");
-    // }
-
+    for (int i = 0; i < strlen(ordem); i++)
+    {
+        printf("\n%d\n", ordem[i]);
+    }
     return 0;
 }
