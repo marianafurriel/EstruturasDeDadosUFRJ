@@ -8,7 +8,6 @@ int main(int argc, char const *argv[])
 {
     int vertices, arestas, aux = 0, pos = 0;
     char c;
-    int soma = 0;
     int auxNum[TAM];
     char linha[TAM];
     int ordem[TAM];
@@ -31,7 +30,6 @@ int main(int argc, char const *argv[])
 
     for (int i = 0; i < vertices; i++) // preenchendo a tabela de adjacencias
     {
-        printf("adjacencias do nó %d\n", i + 1);
         fgets(linha, TAM, stdin);
         for (int j = 0; j < strlen(linha); j++)
         {
@@ -59,23 +57,19 @@ int main(int argc, char const *argv[])
         {
             graus[i] = graus[i] + adj[j][i];
         }
-        printf("grau %d = %d\n", i + 1, graus[i]);
     }
 
     while (aux < vertices)
     {
-        printf("aux%d\n", aux);
-
         for (int i = 0; i < vertices; i++)
         {
 
-            if ((graus[i] == 0) && (add[i] == 0))
+            if ((graus[i] == 0) && (add[i] == 0)) // se o grau for 0 e ainda nao tiver sido adicionada na ordem
             {
                 ordem[ord] = i + 1;
-                printf("adicionado no vetor de ordem: %d\n", i + 1);
                 ord++;
                 add[i] = 1;
-                for (int j = 0; j < vertices; j++)
+                for (int j = 0; j < vertices; j++) // após adicionar na ordem vai diminuir em 1 o grau daqueles que dependem dele
                 {
                     if (adj[i][j] == 1)
                     {
@@ -84,14 +78,9 @@ int main(int argc, char const *argv[])
                 }
             }
         }
-        for (int j = 0; j < vertices; j++)
-        {
-            printf("grau %d = %d\n", j + 1, graus[j]);
-        }
-
         aux++;
     }
-    for (int i = 0; i < vertices; i++)
+    for (int i = 0; i < vertices; i++) // imprime a ordem
     {
         printf("%d ", ordem[i]);
     }
