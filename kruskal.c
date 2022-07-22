@@ -57,6 +57,35 @@ void mergeSort(Aresta *vetor, int inicio, int fim)
     merge(vetor, inicio, meio, fim);
 }
 
+int find(int *conj, int x)
+{
+    if (x != conj[x])
+    {
+        conj[x] = find(conj, conj[x]);
+    }
+    return conj[x];
+}
+void uniao(int a, int b, int *rank, int *conj)
+{
+    a = find(conj, a);
+    b = find(conj, b);
+    if (a != b)
+    {
+        if (rank[a] < rank[b])
+        {
+            conj[a];
+        }
+        else
+        {
+            conj[b] = a;
+            if (rank[a] == rank[b])
+            {
+                rank[a]++;
+            }
+        }
+    }
+}
+
 int main(int argc, char const *argv[])
 {
     int verticesqtd, arestasqtd;
@@ -73,6 +102,7 @@ int main(int argc, char const *argv[])
         scanf("%d", &(arestas[i].b));
         scanf("%d", &(arestas[i].peso));
     }
-    mergeSort(arestas, 0, arestasqtd-1);
+    mergeSort(arestas, 0, arestasqtd - 1); // ordenando as arestas
+
     return 0;
 }
