@@ -6,7 +6,7 @@
 
 typedef struct aresta
 {
-    int saida, chegada;
+    Vertice *saida, *chegada;
 } Aresta;
 
 typedef struct vertice
