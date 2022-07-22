@@ -6,55 +6,73 @@
 
 typedef struct aresta
 {
-    Vertice *saida, *chegada;
+    int a, b, peso;
 } Aresta;
 
-typedef struct vertice
+void merge(Aresta *vetor, int inicio, int meio, int fim)
 {
-    Vertice *pai;
-    int rank = 0;
-} Vertice;
-
-Vertice *find(Vertice *no)
-{
-    int *ant = no->pai;
-    while ((no->pai != no))
+    int i = inicio, j = meio, pos = 0;
+    Aresta *temp = (Aresta *)malloc((fim - inicio) * sizeof(int));
+    while ((i < meio) && (j < fim))
     {
-        if (no->pai == (no->pai)->pai)
+        if (vetor[i].peso <= vetor[j].peso)
         {
-            no->pai = (no->pai)->pai;
+            temp[pos] = vetor[i];
+            i++;
         }
+        else
+        {
+            temp[pos] = vetor[j];
+            j++;
+        }
+        pos++;
     }
-    return no;
+    while (i < meio)
+    {
+        temp[pos] = vetor[i];
+        i++;
+        pos++;
+    }
+    while (j < fim)
+    {
+        temp[pos] = vetor[j];
+        j++;
+        pos++;
+    }
+    for (i = 0; i < pos; i++)
+    {
+        vetor[inicio + i] = temp[i];
+    }
 }
-void uniao(Vertice *no1, Vertice *no2)
+
+void mergeSort(Aresta *vetor, int inicio, int fim)
 {
-    no1 = find(no1);
-    no2 = find(no2);
-    if (no1->rank > no2->rank)
+    if (inicio >= fim - 1)
     {
-        no2->pai = no1;
+        return;
     }
-    else if (no1->rank > no2->rank)
-    {
-        no1->pai = no2;
-    }
-    else
-    {
-        no1->pai = no2;
-        no1->rank++;
-    }
+    int meio = (inicio + fim) / 2;
+    mergeSort(vetor, inicio, meio);
+    mergeSort(vetor, meio, fim);
+    merge(vetor, inicio, meio, fim);
 }
+
 int main(int argc, char const *argv[])
 {
-    int verticesqtd, vertice1, vertice2, arestasqtd, aresta;
+    int verticesqtd, arestasqtd;
     scanf("%d", &verticesqtd);
     scanf("%d", &arestasqtd);
-    int vetor v for (int i = 0; i < arestasqtd; i++)
+    int conj[] = malloc(sizeof(int) * verticesqtd);
+    int rank[] = malloc(sizeof(int) * verticesqtd);
+    Aresta arestas[] = (Aresta *)malloc(sizeof(Aresta) * arestasqtd);
+    for (int i = 0; i < verticesqtd; i++)
     {
-        scanf("%d", &vertice1);
-        scanf("%d", &vertice2);
-        scanf("%d", &arestas);
+        conj[i] = i;
+        rank[i] = 0;
+        scanf("%d", &(arestas[i].a));
+        scanf("%d", &(arestas[i].b));
+        scanf("%d", &(arestas[i].peso));
     }
+    mergeSort(arestas, 0, arestasqtd-1);
     return 0;
 }
