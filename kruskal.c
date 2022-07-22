@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#define TAM 1000
+#define TAM 100
 
 typedef struct aresta
 {
@@ -11,6 +11,7 @@ typedef struct aresta
 
 void merge(Aresta *vetor, int inicio, int meio, int fim)
 {
+    printf("entrou no merge\n");
     int i = inicio, j = meio, pos = 0;
     Aresta *temp = (Aresta *)malloc((fim - inicio) * sizeof(int));
     while ((i < meio) && (j < fim))
@@ -47,6 +48,7 @@ void merge(Aresta *vetor, int inicio, int meio, int fim)
 
 void mergeSort(Aresta *vetor, int inicio, int fim)
 {
+    printf("entrou no mergesort\n");
     if (inicio >= fim - 1)
     {
         return;
@@ -65,7 +67,7 @@ int find(int *conj, int x)
     }
     return conj[x];
 }
-void uniao(int a, int b, int *rank, int *conj)
+int uniao(int a, int b, int *rank, int *conj)
 {
     a = find(conj, a);
     b = find(conj, b);
@@ -73,7 +75,7 @@ void uniao(int a, int b, int *rank, int *conj)
     {
         if (rank[a] < rank[b])
         {
-            conj[a];
+            conj[a] = conj[b];
         }
         else
         {
@@ -83,26 +85,40 @@ void uniao(int a, int b, int *rank, int *conj)
                 rank[a]++;
             }
         }
+        return 1; // fez a uniao
     }
+    return 0; // ja estao no mesmo conjunto
 }
 
 int main(int argc, char const *argv[])
 {
-    int verticesqtd, arestasqtd;
+    char linha[TAM];
+    int verticesqtd, arestasqtd, somaPesos = 0, auxNum[TAM], pos = 0;
     scanf("%d", &verticesqtd);
     scanf("%d", &arestasqtd);
-    int conj[] = malloc(sizeof(int) * verticesqtd);
-    int rank[] = malloc(sizeof(int) * verticesqtd);
-    Aresta arestas[] = (Aresta *)malloc(sizeof(Aresta) * arestasqtd);
-    for (int i = 0; i < verticesqtd; i++)
+    int *conj = (int *)malloc(sizeof(int) * verticesqtd);
+    int *rank = (int *)malloc(sizeof(int) * verticesqtd);
+    Aresta *arestas = (Aresta *)malloc(sizeof(Aresta) * arestasqtd);
+    for (int i = 0; i < arestasqtd; i++)
     {
-        conj[i] = i;
-        rank[i] = 0;
-        scanf("%d", &(arestas[i].a));
-        scanf("%d", &(arestas[i].b));
-        scanf("%d", &(arestas[i].peso));
+        if (verticesqtd <= i)
+        {
+            conj[i] = i;
+            rank[i] = 0;
+        }
+        scanf("%d%d%d", &(arestas[i].a), &(arestas[i].b), &(arestas[i].peso));
     }
+    printf("leu tudo\n");
     mergeSort(arestas, 0, arestasqtd - 1); // ordenando as arestas
-
+    printf("fez o mergesort\n");
+    for (int i = 0; i < arestasqtd; i++)
+    {
+        int aux = uniao(arestas[i].a, arestas[i].a, rank, conj);
+        if (aux)
+        {
+            somaPesos += arestas[i].peso;
+        }
+    }
+    printf("%d\n", somaPesos);
     return 0;
 }
